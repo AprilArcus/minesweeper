@@ -1,8 +1,6 @@
 #! /usr/bin/env ruby
 # encoding: UTF-8
 require_relative 'board'
-require_relative 'computer_player'
-require 'io/console'
 require 'yaml'
 require 'curses'
 
@@ -127,7 +125,8 @@ class Minesweeper
 end
 
 if __FILE__ == $PROGRAM_NAME
-  screen = Curses.init_screen
+  Curses.init_screen
+  Curses.stdscr.keypad = true
   Curses.start_color
   Curses.use_default_colors
   Curses.init_pair( 78,  78, -1) # blue
@@ -139,9 +138,9 @@ if __FILE__ == $PROGRAM_NAME
     if File.file?(Minesweeper::SAVE_FILE)
       Minesweeper.load.play
     else
-      Minesweeper.new(rows: screen.maxy,
-                      cols: screen.maxx,
-                      bombs: (screen.maxy*screen.maxx)/10).play
+      Minesweeper.new(rows: Curses.stdscr.maxy,
+                      cols: Curses.stdscr.maxx,
+                      bombs: (Curses.stdscr.maxx*Curses.stdscr.maxy)/10).play
     end
   ensure
     Curses.close_screen
