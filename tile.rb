@@ -8,7 +8,7 @@ class Tile
     @explored = false
   end
 
-  attr_reader :bomb
+  attr_reader :bomb, :pos
   alias_method :bomb?, :bomb
   attr_accessor :flagged, :explored
   alias_method :flagged?, :flagged

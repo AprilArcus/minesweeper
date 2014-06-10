@@ -1,5 +1,7 @@
+#! /usr/bin/env ruby
 # encoding: UTF-8
 require_relative 'board'
+require_relative 'computer_player'
 require 'io/console'
 require 'yaml'
 require 'curses'
@@ -16,8 +18,12 @@ class Minesweeper
   end
   
   def explore(tile)
-    @lost = true if tile.bomb?
-    explore_recursively(tile)
+    if tile.flagged?
+      toggle_flag(tile)
+    else
+      @lost = true if tile.bomb?
+      explore_recursively(tile)
+    end
   end
   
   def explore_recursively(tile)
@@ -40,12 +46,12 @@ class Minesweeper
     y = @cursor[1]
     if not over
       view = @board.view
-      view[y][x] = '█'
+      view[y][x] = "\e[7m#{view[y][x]}\e[0m"
     else
       view = @board.view(:to_s_lost)
     end
-    system 'clear'
-    view.each { |line| print line.join(' ')+"\n" }
+    # system 'clear'
+    view.each { |line| print line.join(' ')+"\n\r" }
   end
   
   def get_input
@@ -99,13 +105,19 @@ class Minesweeper
 end
 
 if __FILE__ == $PROGRAM_NAME
-  # screen = Curses.init_screen
-  # width = screen.maxx
-  # height = screen.maxy
+  screen = Curses.init_screen
+  width = screen.maxx/2
+  height = screen.maxy-1
+
+  if ARGV[0] == 'ai'
+    ARGV.pop
+    ai = ComputerPlayer.new
+    Minesweeper.new(rows: height, cols: width, bombs: (width*height)/10).play(ai)
+  end
 
   if File.file?(Minesweeper::SAVE_FILE)
     Minesweeper.load.play
   else
-    Minesweeper.new(rows: 24, cols: 40).play
+    Minesweeper.new(rows: height, cols: width, bombs: (width*height)/10).play
   end
 end
