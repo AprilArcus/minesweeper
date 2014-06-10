@@ -29,33 +29,16 @@ class Tile
     neighbors.select { |neighbor| neighbor.bomb? }.count
   end
   
-  def colorize_integer(int)
-    case int
-    when 0 # empty
-      return " "
-    when 1 # green
-      return "\e[38;5;78m1\e[0m"
-    when 2 # blue
-      return "\e[38;5;75m2\e[0m"
-    when 3 # yellow
-      return "\e[38;5;226m3\e[0m"
-    when 4 # orange
-      return "\e[38;5;208m4\e[0m"
-    else # red
-      return "\e[38;5;160m#{int.to_s}\e[0m"
-    end
-  end
-  
   def to_s
-    return "⚑" if @flagged
+    return "F" if @flagged
     return "?" unless @explored
-    colorize_integer(neighboring_bombs)
+    (neighboring_bombs > 0) ? neighboring_bombs.to_s : ' '
   end
   
   def to_s_lost
-    return '☠' if @bomb
-    return '⚑' if @flagged
-    colorize_integer(neighboring_bombs)
+    return '*' if @bomb
+    return 'F' if @flagged
+    (neighboring_bombs > 0) ? neighboring_bombs.to_s : ' '
   end
   
 end
