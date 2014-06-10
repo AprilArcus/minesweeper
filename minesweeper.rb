@@ -139,7 +139,9 @@ if __FILE__ == $PROGRAM_NAME
     if File.file?(Minesweeper::SAVE_FILE)
       Minesweeper.load.play
     else
-      Minesweeper.new(rows: screen.maxy, cols: screen.maxx, bombs: (width*height)/10).play
+      Minesweeper.new(rows: screen.maxy,
+                      cols: screen.maxx,
+                      bombs: (screen.maxy*screen.maxx)/10).play
     end
   ensure
     Curses.close_screen
