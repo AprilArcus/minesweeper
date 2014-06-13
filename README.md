@@ -2,4 +2,4 @@ By [April Arcus](https://github.com/AprilArcus) and [Daniel Walin](http://latin.
 
 Thanks to Jeff Fiddler ([jeffnv](https://github.com/jeffnv)) and Ned Ruggeri ([ruggeri](https://github.com/ruggeri))
 
-![](https://github.com/AprilArcus/minesweeper/blob/master/loss_shot.png)
+![](loss_shot.png)
